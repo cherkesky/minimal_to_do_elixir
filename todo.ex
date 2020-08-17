@@ -21,7 +21,8 @@ defmodule Todo do
   end
 
   def parse(body) do
-    lines = String.split(body, ~r{(\r\n|\r|\n)})
+    [headers | lines] = String.split(body, ~r{(\r\n|\r|\n)})
+    titles = tl String.split(header, ",")
   end
 
 
