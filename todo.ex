@@ -26,5 +26,16 @@ defmodule Todo do
     parse_lines(items, titles)
   end
 
+  def parse_lines(lines, titles) do
+    Enum.reduce(lines, %{}, fn line, built ->
+      [name | fields] = String.split(line, ","))
+      if Enum.count(fields) == Enum.count(titles) do
+        line_data = Enum.zip(titles,fields) |> Enum.into(%{})
+        Map.merge(built, %{name => line_data})
+      else
+        built
+      end
+    end
+  end
 
 end
