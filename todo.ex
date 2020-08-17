@@ -23,6 +23,7 @@ defmodule Todo do
   def parse(body) do
     [headers | lines] = String.split(body, ~r{(\r\n|\r|\n)})
     titles = tl String.split(header, ",")
+    parse_lines(items, titles)
   end
 
 
