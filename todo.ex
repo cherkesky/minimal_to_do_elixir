@@ -16,7 +16,7 @@ defmodule Todo do
       {:ok, body} -> body
       parse(body)
       {:error, reason} -> IO.puts ~s(Could not open file "#{filename}"\n)
-                          IO.inspect(reason)
+                          IO.puts ~s("#{:file.format_error reason}"\n)
                           start()
     end
   end
@@ -28,10 +28,8 @@ defmodule Todo do
   end
 
   def parse_lines(lines, titles) do
-
     Enum.reduce(lines, %{}, fn line, built ->
       [name | fields] = String.split(line, ",")
-
       if Enum.count(fields) == Enum.count(titles) do
         line_data = Enum.zip(titles,fields) |> Enum.into(%{})
         Map.merge(built, %{name => line_data})
