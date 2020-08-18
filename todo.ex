@@ -14,6 +14,7 @@ defmodule Todo do
   def read(filename) do
     case File.read(filename) do
       {:ok, body} -> body
+      parse(body)
       {:error, reason} -> IO.puts ~s(Could not open file "#{filename}"\n)
                           IO.inspect(reason)
                           start()
@@ -21,21 +22,23 @@ defmodule Todo do
   end
 
   def parse(body) do
-    [headers | lines] = String.split(body, ~r{(\r\n|\r|\n)})
+    [header | lines] = String.split(body, ~r{(\r\n|\r|\n)})
     titles = tl String.split(header, ",")
-    parse_lines(items, titles)
+    parse_lines(lines, titles)
   end
 
   def parse_lines(lines, titles) do
+
     Enum.reduce(lines, %{}, fn line, built ->
-      [name | fields] = String.split(line, ","))
+      [name | fields] = String.split(line, ",")
+
       if Enum.count(fields) == Enum.count(titles) do
         line_data = Enum.zip(titles,fields) |> Enum.into(%{})
         Map.merge(built, %{name => line_data})
       else
         built
       end
-    end
-  end
 
-end
+    end)
+  end
+end #module end
